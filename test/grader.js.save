@@ -53,24 +53,15 @@ var cheerioHtmlFile = function(htmlfile) {
     return cheerio.load(fs.readFileSync(htmlfile));
 };
 
-var loadChecksURL = function(checksfile) {
     // return JSON.parse(fs.readFileSync(checksfile));
-    console.log('0',checksfile);
     rest.get(checksfile).on('complete', function(result) {
-        urlcontents=result[0].message;
-        console.log('0',checksfile);
-        console.log('1',JSON.parse(urlcontents));
-        console.log('2',result);
+        urlcontents=result.message;
         return JSON.parse(urlcontents);
     });
 };
 
-var loadChecks=function(checksfile) {
-    return JSON.parse(fs.readFileSync(checksfile));
-};
-
 var checkHtmlFile = function(htmlfile, checksfile) {
-    $ = loadChecksURL(htmlfile);
+    $ = cheerioHtmlFile(htmlfile);
     var checks = loadChecks(checksfile).sort();
     var out = {};
     for(var ii in checks) {
